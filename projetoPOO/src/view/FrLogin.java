@@ -5,6 +5,13 @@
  */
 package view;
 
+import controller.UsuarioController;
+import java.awt.event.KeyEvent;
+import java.net.URL;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import utils.Util;
+
 /**
  *
  * @author Administrador
@@ -39,6 +46,11 @@ public class FrLogin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         pnl.setBackground(new java.awt.Color(153, 255, 102));
         pnl.setToolTipText("");
@@ -61,6 +73,11 @@ public class FrLogin extends javax.swing.JFrame {
         edtSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 edtSenhaActionPerformed(evt);
+            }
+        });
+        edtSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edtSenhaKeyPressed(evt);
             }
         });
         pnl.add(edtSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 280, 240, -1));
@@ -108,21 +125,65 @@ public class FrLogin extends javax.swing.JFrame {
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         // TODO add your handling code here:
+
+
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void btnEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEntrarMouseClicked
         logar();
     }//GEN-LAST:event_btnEntrarMouseClicked
 
-    
-    private void logar(){
-            //ler campos, guardar os dados, consultar, validar
-            
-            String usuario = edtUsuario.getText();
-            String senha =  new String (edtSenha.getPassword());
-   
-            
+    private void edtSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtSenhaKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            logar();
+        }
+    }//GEN-LAST:event_edtSenhaKeyPressed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+
+        //Define o ícone da janela
+        this.setIconImage(Util.getIcone());
+    }//GEN-LAST:event_formWindowOpened
+
+    private boolean verificarCampos() {
+        if (edtUsuario.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Usuário em Branco.");
+            return false;
+        }
+        if (new String(edtSenha.getPassword()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Senha em Branco.");
+            return false;
+        }
+
+        return true;
     }
+
+    private void logar() {
+
+        if (!verificarCampos()) {
+            return;
+        }
+        //ler campos, guardar os dados, consultar, validar
+
+        String usuario = edtUsuario.getText();
+        String senha = new String(edtSenha.getPassword());
+
+        //consultar no banco de dados
+        UsuarioController controller = new UsuarioController();
+
+        if (controller.autenticar(usuario, senha)) {
+            //Entra no sistema
+            FrMenu telaMenu = new FrMenu ();
+            this.setVisible(false);
+            telaMenu.setVisible(true);
+
+        } else {
+            //Mensagem de usuário não encontrado
+            JOptionPane.showMessageDialog(rootPane, "Usuário não encontrado");
+        };
+        //Verificar se tem ou não aquele usuário
+    }
+
     /**
      * @param args the command line arguments
      */
