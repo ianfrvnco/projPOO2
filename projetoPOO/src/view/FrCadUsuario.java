@@ -5,6 +5,9 @@
  */
 package view;
 
+import controller.UsuarioController;
+import javax.swing.JOptionPane;
+import model.Usuario;
 import utils.Util;
 
 /**
@@ -38,13 +41,15 @@ public class FrCadUsuario extends javax.swing.JDialog {
         lblEmail = new javax.swing.JLabel();
         lblSenha = new javax.swing.JLabel();
         lblDataNascimento = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         edtDataNascimento = new javax.swing.JFormattedTextField();
         edtEmail = new javax.swing.JTextField();
         edtUsuario = new javax.swing.JTextField();
-        edtSenha = new javax.swing.JTextField();
         chkAtivo = new javax.swing.JCheckBox();
+        edtSenha = new javax.swing.JPasswordField();
+        edtConfirmaSenha = new javax.swing.JPasswordField();
+        lblSenha2 = new javax.swing.JLabel();
 
         jButton2.setText("Voltar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -88,14 +93,24 @@ public class FrCadUsuario extends javax.swing.JDialog {
         lblDataNascimento.setText("Data de Nascimento");
         lblDataNascimento.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jButton1.setText("Voltar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnVoltar.setText("Voltar");
+        btnVoltar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnVoltarMouseClicked(evt);
+            }
+        });
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnVoltarActionPerformed(evt);
             }
         });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSalvarMouseClicked(evt);
+            }
+        });
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -117,40 +132,45 @@ public class FrCadUsuario extends javax.swing.JDialog {
             }
         });
 
+        lblSenha2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblSenha2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSenha2.setText("Confirma Senha");
+        lblSenha2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(58, 58, 58)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(edtSenha)
-                    .addComponent(edtEmail)
-                    .addComponent(edtUsuario)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnVoltar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalvar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(edtDataNascimento, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblDataNascimento, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
+                            .addComponent(lblDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(chkAtivo))
-                    .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblSenha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(edtSenha)
+                    .addComponent(edtEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(edtUsuario, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblSenha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(edtConfirmaSenha, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSenha2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(81, 81, 81))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
-                .addComponent(btnSalvar)
-                .addGap(107, 107, 107))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
+                .addGap(18, 18, 18)
                 .addComponent(lblUsuario)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(edtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -161,18 +181,22 @@ public class FrCadUsuario extends javax.swing.JDialog {
                 .addGap(34, 34, 34)
                 .addComponent(lblSenha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(edtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
+                .addComponent(edtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(lblSenha2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(edtConfirmaSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
                 .addComponent(lblDataNascimento)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(edtDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chkAtivo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnVoltar)
                     .addComponent(btnSalvar))
-                .addGap(64, 64, 64))
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -189,9 +213,9 @@ public class FrCadUsuario extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -213,9 +237,97 @@ public class FrCadUsuario extends javax.swing.JDialog {
         this.setIconImage(Util.getIcone());
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnVoltarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVoltarMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_btnVoltarMouseClicked
+
+    private void btnSalvarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarMouseClicked
+        gravar();
+    }//GEN-LAST:event_btnSalvarMouseClicked
+
     /**
      * @param args the command line arguments
      */
+    private void gravar() {
+        //validar os campos
+
+        if (!verificarCampos()) {
+            return;
+        }
+        //ler os campos
+        //guardar em um objeto
+
+        Usuario usu = new Usuario();
+        usu.setNome(edtUsuario.getText());
+        usu.setEmail(edtEmail.getText());
+        usu.setSenha(Util.calcularHash(new String(edtSenha.getPassword())));
+        usu.setDataNascimento(Util.converterStringToDate(edtDataNascimento.getText()));
+        usu.setAtivo(chkAtivo.isSelected());
+
+        // enviar para o banco de dados
+        UsuarioController controller = new UsuarioController();
+        if(controller.inserir(usu)){
+            JOptionPane.showMessageDialog(null, "Usuário inserido.");
+            this.dispose();
+        }
+        
+    }
+
+    private boolean verificarCampos() {
+
+        String senha = new String(edtSenha.getPassword());
+        String confirmaSenha = new String(edtConfirmaSenha.getPassword());
+
+        if (edtUsuario.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo 'Nome' em branco.");
+            return false;
+        }
+
+        if (edtEmail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo 'Email' em branco.");
+            return false;
+        }
+
+        if (senha.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo 'Senha' em branco.");
+            return false;
+        }
+
+        //^ - Inicio de linha
+        //$ - Final de linha
+        //[] - Conjunto de caracteres
+        //+ - quantidade de vezes que o conjunto pode aparecer
+        //+ - pelo menos 1 vez
+        //* - 0 ou várias vezes o conjunto se repete
+        //{X} - Especificamente X vezes
+        if (!edtUsuario.getText().matches("[\\p{L} ]+$")) {
+            JOptionPane.showMessageDialog(null, "O campo 'Nome' possui formato inválido");
+            return false;
+        }
+
+        if (!edtEmail.getText().matches("^[a-z0-9_.]+@[a-z0-9_.]+.[a-z]+$")) {
+            JOptionPane.showMessageDialog(null, "O campo 'Email' possui formato inválido");
+            return false;
+        }
+
+        if (!edtDataNascimento.getText().matches("^[0-9]{2}/[0-9]{2}/[0-9]{4}$")) {
+            JOptionPane.showMessageDialog(null, "O campo 'Data de Nascimento' possui formato inválido (dd/mm/aaaa).");
+            return false;
+        }
+
+        if (senha.length() < 6) {
+            JOptionPane.showMessageDialog(null, "A senha deve ser maior que 6 dígitos.");
+            return false;
+        }
+
+        if (!senha.equals(confirmaSenha)) {
+            JOptionPane.showMessageDialog(null, "As senhas devem ser idênticas.");
+            return false;
+        }
+
+        return true;
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -257,18 +369,20 @@ public class FrCadUsuario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnVoltar;
     private javax.swing.JCheckBox chkAtivo;
+    private javax.swing.JPasswordField edtConfirmaSenha;
     private javax.swing.JFormattedTextField edtDataNascimento;
     private javax.swing.JTextField edtEmail;
-    private javax.swing.JTextField edtSenha;
+    private javax.swing.JPasswordField edtSenha;
     private javax.swing.JTextField edtUsuario;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblDataNascimento;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblSenha;
+    private javax.swing.JLabel lblSenha2;
     private javax.swing.JLabel lblUsuario;
     // End of variables declaration//GEN-END:variables
 }
