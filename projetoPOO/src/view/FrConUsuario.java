@@ -202,12 +202,12 @@ public class FrConUsuario extends javax.swing.JDialog {
         //3 - usuários ativos
         int opcaoFiltro = cbxFiltro.getSelectedIndex();
         String filtro = edtFiltro.getText();
-
+        
         //consultar o banco de dados
         UsuarioController controller = new UsuarioController();
         
-        //passar os filtros pro método consultar
-        List<Usuario> listaUsuarios = controller.consultar();
+        //passa os filtros pro método consultar
+        List<Usuario> listaUsuarios = controller.consultar(opcaoFiltro, filtro);
 
         //Preenche a grade
         for (Usuario usu : listaUsuarios) {
