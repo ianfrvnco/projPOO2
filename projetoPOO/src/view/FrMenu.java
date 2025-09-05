@@ -99,6 +99,11 @@ public class FrMenu extends javax.swing.JFrame {
         mnConsultas.setText("Consultas");
 
         miConUsuarios.setText("Usuários");
+        miConUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miConUsuariosActionPerformed(evt);
+            }
+        });
         mnConsultas.add(miConUsuarios);
 
         jMenuItem3.setText("???");
@@ -140,6 +145,12 @@ public class FrMenu extends javax.swing.JFrame {
         //Define o ícone da janela
         this.setIconImage(Util.getIcone());
     }//GEN-LAST:event_formWindowOpened
+
+    private void miConUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConUsuariosActionPerformed
+        FrConUsuario telaConUsuario = new FrConUsuario(this, rootPaneCheckingEnabled);
+        
+        telaConUsuario.setVisible(true);
+    }//GEN-LAST:event_miConUsuariosActionPerformed
 
    
     

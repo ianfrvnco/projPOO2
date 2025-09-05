@@ -79,5 +79,14 @@ public class Usuario {
         this.ativo = ativo;
     }
     
+    public String getAtivoString(){
+        if(ativo){
+            return "Ativo";
+        } else {
+            return "Inativo";
+        }
+    }
+    
+    
     
 }
