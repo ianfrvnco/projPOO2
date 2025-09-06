@@ -131,11 +131,11 @@ public class UsuarioController {
 
         if (!filtro.equals("")) {
             if (opcaoFiltro == 0) {
-                sql = "SELECT * from TBUSUARIO WHERE pkusuario ="+filtro;
+                sql = "SELECT * from TBUSUARIO WHERE pkusuario =" + filtro;
             } else if (opcaoFiltro == 1) {
-                sql = "SELECT * from TBUSUARIO WHERE nome LIKE '%"+filtro+"%'";
+                sql = "SELECT * from TBUSUARIO WHERE nome LIKE '%" + filtro + "%'";
             } else if (opcaoFiltro == 2) {
-                sql = "SELECT * from TBUSUARIO WHERE email LIKE '%"+filtro+"%' ";
+                sql = "SELECT * from TBUSUARIO WHERE email LIKE '%" + filtro + "%' ";
             } else if (opcaoFiltro == 3) {
                 if (filtro.equals("Ativo")) {
                     sql = "SELECT * from TBUSUARIO WHERE Ativo = 1";
@@ -193,6 +193,63 @@ public class UsuarioController {
         }
 
         return lista;
+
+    }
+
+    public boolean alterar(Usuario usu) {
+
+        //Montar o comando a ser executado
+        //os ? são variáveis que são preenchidas mais adiante
+        String sql = "UPDATE TBUSUARIO SET nome = ?, email = ?, datanasc = ?, ativo = ?";
+
+        if (usu.getSenha() != null) {
+            sql += ", senha = ?";
+        }
+
+        sql += " WHERE pkUsuario = ?";
+
+        //Cria uma instância do gerenciador de conexão
+        //Conexão com o banco de dados
+        GerenciadorConexao gerenciador = new GerenciadorConexao();
+
+        //Declara as variáveis com nulas antes do try
+        //para poder usar no finally
+        PreparedStatement comando = null;
+
+        try {
+            //prepara o sql, analisandoi o formato e as váriaveis
+            comando = gerenciador.prepararComando(sql);
+
+            //define o valor de cada variável (?) pela posição em que aparecem
+            comando.setString(1, usu.getNome());
+            comando.setString(2, usu.getEmail());
+            comando.setDate(3, new java.sql.Date(usu.getDataNascimento().getTime()));
+            comando.setBoolean(4, usu.isAtivo());
+
+            if (usu.getSenha() != null) {
+                comando.setString(5, usu.getSenha());
+                comando.setInt(6, usu.getPkusuario());
+            } else{
+                comando.setInt(5, usu.getPkusuario());
+            }
+
+            //executa o comando e guarda o resultado da consulta
+            //o resultado é semelhante a uma grade
+            comando.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+
+            //caso ocorra um erro relacio0nado ao banco de dados
+            //exibe popup com o erro
+            JOptionPane.showMessageDialog(null, e.getMessage());
+
+        } finally {
+            //depois de executar o try, dando erro ou não executa o finally
+            gerenciador.fecharConexao(comando);
+        }
+
+        return false;
 
     }
 
