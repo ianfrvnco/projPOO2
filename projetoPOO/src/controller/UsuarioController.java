@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.Usuario;
+import utils.Util;
 //import utils.Utils;
 
 public class UsuarioController {
@@ -82,7 +83,7 @@ public class UsuarioController {
 
         //Montar o comando a ser executado
         //os ? são variáveis que são preenchidas mais adiante
-        String sql = "INSERT INTO TBUSUARIO(nome, email, senha, datanasc, ativo) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO TBUSUARIO(nome, email, senha, datanasc, ativo, imagem) VALUES (?,?,?,?,?,?)";
 
         //Cria uma instância do gerenciador de conexão
         //Conexão com o banco de dados
@@ -95,6 +96,7 @@ public class UsuarioController {
         try {
             //prepara o sql, analisandoi o formato e as váriaveis
             comando = gerenciador.prepararComando(sql);
+            byte[] iconBytes = Util.converterIconToBytes(usu.getImagem());
 
             //define o valor de cada variável (?) pela posição em que aparecem
             comando.setString(1, usu.getNome());
@@ -102,6 +104,7 @@ public class UsuarioController {
             comando.setString(3, usu.getSenha());
             comando.setDate(4, new java.sql.Date(usu.getDataNascimento().getTime()));
             comando.setBoolean(5, usu.isAtivo());
+            comando.setBytes(6, iconBytes);
 
             //executa o comando e guarda o resultado da consulta
             //o resultado é semelhante a uma grade
@@ -232,6 +235,48 @@ public class UsuarioController {
             } else{
                 comando.setInt(5, usu.getPkusuario());
             }
+
+            //executa o comando e guarda o resultado da consulta
+            //o resultado é semelhante a uma grade
+            comando.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+
+            //caso ocorra um erro relacio0nado ao banco de dados
+            //exibe popup com o erro
+            JOptionPane.showMessageDialog(null, e.getMessage());
+
+        } finally {
+            //depois de executar o try, dando erro ou não executa o finally
+            gerenciador.fecharConexao(comando);
+        }
+
+        return false;
+
+    }
+    
+    public boolean deletar(int pkUsuario) {
+
+        //Montar o comando a ser executado
+        //os ? são variáveis que são preenchidas mais adiante
+        String sql = "DELETE FROM TBUSUARIO WHERE pkusuario=?";
+
+        //Cria uma instância do gerenciador de conexão
+        //Conexão com o banco de dados
+        GerenciadorConexao gerenciador = new GerenciadorConexao();
+
+        //Declara as variáveis com nulas antes do try
+        //para poder usar no finally
+        PreparedStatement comando = null;
+
+        try {
+            //prepara o sql, analisandoi o formato e as váriaveis
+            comando = gerenciador.prepararComando(sql);
+
+            //define o valor de cada variável (?) pela posição em que aparecem
+            comando.setInt(1, pkUsuario);
+ 
 
             //executa o comando e guarda o resultado da consulta
             //o resultado é semelhante a uma grade

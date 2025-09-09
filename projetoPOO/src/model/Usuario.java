@@ -6,6 +6,7 @@
 package model;
 
 import java.util.Date;
+import javax.swing.Icon;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Usuario {
     private String senha;
     private Date dataNascimento;
     private boolean ativo;
+    private Icon imagem;
 
     public int getPkusuario() {
         return pkusuario;
@@ -66,6 +68,16 @@ public class Usuario {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
+
+    public Icon getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(Icon imagem) {
+        this.imagem = imagem;
+    }
+    
+    
 
     public Usuario() {
     }

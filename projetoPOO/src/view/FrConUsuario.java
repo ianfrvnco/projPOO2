@@ -9,6 +9,7 @@ import controller.UsuarioController;
 import javax.swing.table.DefaultTableModel;
 import model.Usuario;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -47,6 +48,7 @@ public class FrConUsuario extends javax.swing.JDialog {
         edtFiltro = new javax.swing.JTextField();
         cbxFiltro = new javax.swing.JComboBox<>();
         btnAlterar = new javax.swing.JButton();
+        btnDeletar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta");
@@ -134,6 +136,13 @@ public class FrConUsuario extends javax.swing.JDialog {
             }
         });
 
+        btnDeletar.setText("Deletar");
+        btnDeletar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeletarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlPrincipalLayout = new javax.swing.GroupLayout(pnlPrincipal);
         pnlPrincipal.setLayout(pnlPrincipalLayout);
         pnlPrincipalLayout.setHorizontalGroup(
@@ -154,6 +163,8 @@ public class FrConUsuario extends javax.swing.JDialog {
                 .addGap(27, 27, 27)
                 .addComponent(btnVoltar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDeletar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAlterar)
                 .addGap(45, 45, 45))
         );
@@ -172,7 +183,8 @@ public class FrConUsuario extends javax.swing.JDialog {
                 .addGap(62, 62, 62)
                 .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVoltar)
-                    .addComponent(btnAlterar))
+                    .addComponent(btnAlterar)
+                    .addComponent(btnDeletar))
                 .addGap(22, 22, 22))
         );
 
@@ -220,41 +232,48 @@ public class FrConUsuario extends javax.swing.JDialog {
 
     private void btnAlterarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAlterarMouseClicked
         //Valida se alguma linha foi selecionada na grade
-        if(tblUsuarios.getSelectedRow() == -1){
+        if (tblUsuarios.getSelectedRow() == -1) {
             return; //encerra a função
         }
-        
+
         //Pega o número da linha selecionada
         int posicaoLinha = tblUsuarios.getSelectedRow();
-        
+
         //Pega o valor da célula na grade, na coluna 0 (Código)
         String celula = tblUsuarios.getValueAt(posicaoLinha, 0).toString();
-       
+
         int pkUsuario = Integer.parseInt(celula);
-        
+
         FrAltUsuario telaAlterar = new FrAltUsuario(null, rootPaneCheckingEnabled);
         //passo o código do usuário para tela de alteração
         telaAlterar.setPkUsuario(pkUsuario);
         telaAlterar.setVisible(true);
+
+        //Quando fechar a janela de alteração, a janela de consulta pesquisa novamente;
+        pesquisar();
     }//GEN-LAST:event_btnAlterarMouseClicked
- 
+
+    private void btnDeletarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeletarMouseClicked
+        deletar();
+    }//GEN-LAST:event_btnDeletarMouseClicked
+
     private void pesquisar() {
         //Pega o modelo da grade com suas colunas
         DefaultTableModel modeloTabela = (DefaultTableModel) tblUsuarios.getModel();
 
         //Limpa a grade setando o número de linhas para zero
         modeloTabela.setNumRows(0);
-        
+
         //0 - código igual
         //1 - nome contro
         //2 - email contendo
         //3 - usuários ativos
         int opcaoFiltro = cbxFiltro.getSelectedIndex();
         String filtro = edtFiltro.getText();
-        
+
         //consultar o banco de dados
         UsuarioController controller = new UsuarioController();
-        
+
         //passa os filtros pro método consultar
         List<Usuario> listaUsuarios = controller.consultar(opcaoFiltro, filtro);
 
@@ -276,7 +295,33 @@ public class FrConUsuario extends javax.swing.JDialog {
         JTableHeader header = tblUsuarios.getTableHeader();
         DefaultTableCellRenderer centralizado = (DefaultTableCellRenderer) header.getDefaultRenderer();
         centralizado.setHorizontalAlignment(SwingConstants.CENTER);
-        */
+         */
+    }
+
+    public void deletar() {
+        //Valida se alguma linha foi selecionada na grade
+        if (tblUsuarios.getSelectedRow() == -1) {
+            return; //encerra a função
+        }
+
+        //Pega o número da linha selecionada
+        int posicaoLinha = tblUsuarios.getSelectedRow();
+
+        //Pega o valor da célula na grade, na coluna 0 (Código)
+        String celula = tblUsuarios.getValueAt(posicaoLinha, 0).toString();
+
+        int pkUsuario = Integer.parseInt(celula);
+
+        UsuarioController controller = new UsuarioController();
+
+        //Passar para o controller para remover do BD;
+        if (controller.deletar(pkUsuario)) {
+
+            JOptionPane.showMessageDialog(null, "Usuário deletado com sucesso.");
+            pesquisar();
+        } else {
+            JOptionPane.showMessageDialog(null, "Falha ao deletar.");
+        }
     }
 
     /**
@@ -323,6 +368,7 @@ public class FrConUsuario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnDeletar;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JComboBox<String> cbxFiltro;

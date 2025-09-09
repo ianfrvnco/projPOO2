@@ -138,8 +138,10 @@ public class FrAltUsuario extends javax.swing.JDialog {
             }
         });
 
+        edtSenha.setEditable(false);
         edtSenha.setBackground(new java.awt.Color(153, 153, 153));
 
+        edtConfirmaSenha.setEditable(false);
         edtConfirmaSenha.setBackground(new java.awt.Color(153, 153, 153));
 
         lblSenha2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -195,9 +197,8 @@ public class FrAltUsuario extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(lblSenha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(edtCodigo)
-                                    .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
+                                .addComponent(edtCodigo, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblCodigo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
                                 .addComponent(edtSenha, javax.swing.GroupLayout.Alignment.LEADING))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -273,11 +274,11 @@ public class FrAltUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnSalvarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarMouseClicked
-        //gravar();
+        gravar();
     }//GEN-LAST:event_btnSalvarMouseClicked
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void edtDataNascimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtDataNascimentoActionPerformed
@@ -382,7 +383,7 @@ public class FrAltUsuario extends javax.swing.JDialog {
 
         if (edtSenha.isEditable()) {
             if (new String(edtSenha.getPassword()).isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Campo 'Senha'");
+                JOptionPane.showMessageDialog(null, "Campo 'Senha'em branco.");
                 return false;
             }
         }
